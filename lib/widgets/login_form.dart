@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:formz/formz.dart';
 import 'package:login_firebase/logic/cubits/login/login_cubit.dart';
 import 'package:login_firebase/screens/signup_page.dart';
+import 'package:login_firebase/theme.dart';
 
 class LoginForm extends StatelessWidget {
   @override
@@ -123,7 +124,7 @@ class _ForgotPasswordButton extends StatelessWidget {
       key: const Key('loginForm_createAccount_flatButton'),
       child: Text(
         'Forgot passsword?',
-        style: TextStyle(color: theme.primaryColor),
+        style: TextStyle(color: theme.accentColor),
       ),
       onPressed: () {},
     );
@@ -138,7 +139,7 @@ class _SignUpButton extends StatelessWidget {
       key: const Key('loginForm_createAccount_flatButton'),
       child: Text(
         'Sign up',
-        style: TextStyle(color: theme.primaryColor),
+        style: TextStyle(color: theme.accentColor),
       ),
       onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),
     );

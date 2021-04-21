@@ -114,7 +114,7 @@ class _BackButton extends StatelessWidget {
         child: Icon(Icons.arrow_back, color: Colors.white, size: 40,),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.0),
-          color: theme.primaryColor
+          color: theme.accentColor
         ),
       ),
     );
