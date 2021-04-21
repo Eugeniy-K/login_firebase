@@ -21,8 +21,8 @@ class FilmDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var dateTime = DateTime.parse(_film.dateTime);
-    var formattedDate = DateFormat('MMMM dd, yyyy').format(dateTime);
+    // var dateTime = DateTime.parse(_film.dateTime);
+    // var formattedDate = DateFormat('MMMM dd, yyyy').format(dateTime);
 
     return Scaffold(
       appBar: AppBar(),
@@ -51,7 +51,7 @@ class FilmDetails extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                                   Text(_film.title),
-                                  Expanded(child: Text('${formattedDate}')),
+                                  Expanded(child: Text('${_film.dateTime}')),
                                   // Text('$formattedDate'),
                                   Text('raiting ${_film.raiting}'),
                             ],

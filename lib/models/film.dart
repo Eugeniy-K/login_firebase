@@ -24,7 +24,7 @@ class Film {
         stringToDate(json['release_date'] as String),
         // json['release_date'] as String,
         json['id'].toString(),
-        json['popularity'].toString().substring(0, 5));
+        json['popularity'].toString());
   }
 
   static Film fromEntity(FilmEntity entity) {
@@ -39,7 +39,7 @@ class Film {
 
   static String stringToDate(String date) {
     var dateTime = DateTime.parse(date);
-    var formattedDate = DateFormat('MMMM dd, yyyy').format(dateTime);
+    var formattedDate = DateFormat('MMM dd, yyyy').format(dateTime);
     return formattedDate;
   }
 

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:login_firebase/constants.dart';
 import 'package:login_firebase/models/film.dart';
 import 'package:login_firebase/screens/film_details.dart';
+import 'package:login_firebase/widgets/explore.dart';
 
 class FilmItem extends StatelessWidget {
 
@@ -14,7 +15,7 @@ class FilmItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var dateTime = DateTime.parse(film.dateTime);
-    // var formattedDate = DateFormat('MMMM dd, yyyy').format(dateTime);
+    // var formattedDate = DateFormat('MMM dd, yyyy').format(dateTime);
 
     return GestureDetector(
       onTap: tap ? (){
@@ -41,7 +42,7 @@ class FilmItem extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('raiting ${film.raiting}'),
+              Expanded(child: Text('raiting ${film.raiting}')),
               Text('${film.dateTime}')
               // Text('$formattedDate')
             ],
