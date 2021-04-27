@@ -27,7 +27,7 @@ class FilmsBloc extends Bloc<FilmsEvent, FilmsState> {
     //   yield* _mapToggleAllToState();
     // } else if (event is ClearCompleted) {
     //   yield* _mapClearCompletedToState();
-    } else if (event is FilmsUpdated) {
+    } else if (event is FilmsUpdatedEvent) {
       yield* _mapFilmsUpdateToState(event);
     }
   }
@@ -35,7 +35,7 @@ class FilmsBloc extends Bloc<FilmsEvent, FilmsState> {
   Stream<FilmsState> _mapLoadFilmsToState() async* {
     _filmsSubscription?.cancel();
     _filmsSubscription = _filmsRepository.films().listen(
-          (films) => add(FilmsUpdated(films)),
+          (films) => add(FilmsUpdatedEvent(films)),
     );
   }
 
@@ -75,7 +75,7 @@ class FilmsBloc extends Bloc<FilmsEvent, FilmsState> {
   //   }
   // }
 
-  Stream<FilmsState> _mapFilmsUpdateToState(FilmsUpdated event) async* {
+  Stream<FilmsState> _mapFilmsUpdateToState(FilmsUpdatedEvent event) async* {
     yield FilmsLoaded(event.films);
   }
 

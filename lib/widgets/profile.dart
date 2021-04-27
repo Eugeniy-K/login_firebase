@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class Profile extends StatelessWidget {
 
   Profile(this._user);
-  User _user;
+  UserModel _user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,9 @@ class Profile extends StatelessWidget {
             CircleAvatar(
               child: Icon(Icons.account_circle),
             ),
+            Text('Hello ${_user.name}'),
             Text(_user.email),
+            Text(_user.id),
           ],
         ),
       ),

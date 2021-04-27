@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:login_firebase/entities/user_entity.dart';
 
 /// {@template user}
 /// User model
 ///
-/// [User.empty] represents an unauthenticated user.
+/// [UserModel.empty] represents an unauthenticated user.
 /// {@endtemplate}
-class User extends Equatable {
+class UserModel extends Equatable {
   /// {@macro user}
-  const User({
+  const UserModel({
     required this.email,
     required this.id,
     this.name,
     this.photo,
-  })  : assert(email != null),
-        assert(id != null);
+  });
 
   /// The current user's email address.
   final String email;
@@ -28,7 +28,20 @@ class User extends Equatable {
   final String? photo;
 
   /// Empty user which represents an unauthenticated user.
-  static const empty = User(email: '', id: '', name: null, photo: null);
+  static const empty = UserModel(email: '', id: '', name: null, photo: null);
+
+  UserEntity toEntity() {
+    return UserEntity(email, id, name, photo);
+  }
+
+  static UserModel fromEntity(UserEntity entity) {
+    return UserModel(
+      email: entity.email,
+      id: entity.id,
+      name: entity.name,
+      photo: entity.photo,
+    );
+  }
 
   @override
   List<Object> get props => [email, id, name ?? "", photo ?? ""];

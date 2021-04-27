@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:login_firebase/entities/user_entity.dart';
 import 'package:login_firebase/models/user.dart';
 import 'package:meta/meta.dart';
 
@@ -28,17 +30,60 @@ class AuthenticationRepository {
     GoogleSignIn? googleSignIn,
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        // db = FirebaseFirestore;
 
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final userCollection = FirebaseFirestore.instance.collection('users');
+  // final db;
 
-  /// Stream of [User] which will emit the current user when
+  //существует ли пользователь в firestore
+ Future<UserModel?> checkUsers(UserModel? user) async {
+   UserModel? fireUser = null;
+   await userCollection.get().then((value) {
+     value.docs.forEach((element) {
+       if (element.data()['id'] == user?.id)
+         fireUser = UserModel.fromEntity(UserEntity.fromSnapshot(element));
+     });
+   });
+   if (fireUser != null)
+     return fireUser;
+   else return null;
+   // var tmp = await checkUsers();  tmp = User?
+ }
+
+  // @override
+  // Future<void> addNewUser(User user) {
+  //   return userCollection.add(user.toEntity().toDocument());
+  // }
+  //
+  // @override
+  // Future<void> deleteUser(User user) async {
+  //   return userCollection.doc(user.id).delete();
+  // }
+
+  @override
+  Stream<List<UserModel>> users() {
+    return userCollection.snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((doc) => UserModel.fromEntity(UserEntity.fromSnapshot(doc)))
+          .toList();
+    });
+  }
+
+  @override
+  Future<void> updateUser(UserModel update) {
+    return userCollection
+        .doc(update.id)
+        .update(update.toEntity().toDocument());
+  }
+  /// Stream of [UserModel] which will emit the current user when
   /// the authentication state changes.
   ///
-  /// Emits [User.empty] if the user is not authenticated.
-  Stream<User> get user {
+  /// Emits [UserModel.empty] if the user is not authenticated.
+  Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser == null ? User.empty : firebaseUser.toUser;
+      return firebaseUser == null ? UserModel.empty : firebaseUser.toUser;
     });
   }
 
@@ -96,7 +141,7 @@ class AuthenticationRepository {
   }
 
   /// Signs out the current user which will emit
-  /// [User.empty] from the [user] Stream.
+  /// [UserModel.empty] from the [user] Stream.
   ///
   /// Throws a [LogOutFailure] if an exception occurs.
   Future<void> logOut() async {
@@ -112,7 +157,7 @@ class AuthenticationRepository {
 }
 
 extension on firebase_auth.User {
-  User get toUser {
-    return User(id: uid, email: email!, name: displayName, photo: photoURL);
+  UserModel get toUser {
+    return UserModel(id: uid, email: email!, name: displayName, photo: photoURL);
   }
 }

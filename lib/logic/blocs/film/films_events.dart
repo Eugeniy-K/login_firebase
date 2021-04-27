@@ -52,10 +52,10 @@ class ClearCompleted extends FilmsEvent {}
 
 // class ToggleAll extends FilmsEvent {}
 
-class FilmsUpdated extends FilmsEvent {
+class FilmsUpdatedEvent extends FilmsEvent {
   final List<Film> films;
 
-  FilmsUpdated(this.films);
+  FilmsUpdatedEvent(this.films);
 
   @override
   List<Object> get props => [films];

@@ -7,6 +7,7 @@ import 'package:login_firebase/logic/blocs/tab/tab_bloc.dart';
 import 'package:login_firebase/provider/film_api_client.dart';
 import 'package:login_firebase/repositories/api_film_repository.dart';
 import 'package:login_firebase/repositories/firebase_films_repository.dart';
+import 'package:login_firebase/screens/finish_signup_page.dart';
 import 'logic/blocs/film/films.dart';
 import 'screens/home_page.dart';
 import 'theme.dart';
@@ -42,7 +43,7 @@ class App extends StatelessWidget {
             BlocProvider(
                 create: (_) => FilmsApiBloc(apiFilmRepository: ApiFilmRepository(
                     filmApiClient: FilmApiClient(
-                        httpClient: http.Client())))..add(FilmsApiRequested()))
+                        httpClient: http.Client())))..add(FilmsApiRequested())),
           ],
           child: AppView())
     );
@@ -79,6 +80,13 @@ class _AppViewState extends State<AppView> {
                   LoginPage.route(),
                       (route) => false,
                 );
+                break;
+              case AuthenticationStatus.justauth:
+            //     _navigator!.pushAndRemoveUntil<void>(
+            // HomePage.route(),
+            // (route) => false,);
+                _navigator!.pushAndRemoveUntil<void>(FinishSignUpPage.route(),
+                        (route) => false);
                 break;
               default:
                 break;

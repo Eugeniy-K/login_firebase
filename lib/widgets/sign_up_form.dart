@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:formz/formz.dart';
 import 'package:login_firebase/logic/cubits/signup/signup_cubit.dart';
+import 'package:login_firebase/screens/finish_signup_page.dart';
 import 'package:login_firebase/theme.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -30,9 +31,9 @@ class SignUpForm extends StatelessWidget {
           _EmailText(),
           // const SizedBox(height: 3.0),
           _EmailInput(),
-          _UsernameText(),
+          // _UsernameText(),
           // const SizedBox(height: 3.0),
-          _UsernameInput(),
+          // _UsernameInput(),
           _PasswordText(),
           // const SizedBox(height: 3.0),
           _PasswordInput(),
@@ -223,7 +224,7 @@ class _SignUpButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            primary: Colors.orangeAccent,
+            primary: theme.accentColor,
           ),
           onPressed: state.status.isValidated
               ? () => context.read<SignUpCubit>().signUpFormSubmitted()

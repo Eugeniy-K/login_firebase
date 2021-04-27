@@ -22,15 +22,21 @@ class AuthenticationBloc
   }
 
   final AuthenticationRepository _authenticationRepository;
-  late StreamSubscription<User> _userSubscription;
+  late StreamSubscription<UserModel> _userSubscription;
+  StreamSubscription? _usersFirebaseSubscription;
 
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event,
       ) async* {
     if (event is AuthenticationUserChanged) {
-      yield _mapAuthenticationUserChangedToState(event);
-    } else if (event is AuthenticationLogoutRequested) {
+      UserModel? user = await _authenticationRepository.checkUsers(event.user);
+      yield _mapAuthenticationUserChangedToState(event.user, user);
+    }
+    if (event is SignUpUserAddedEvent) {
+      yield _mapSignUpUserAdded(event.user);
+    }
+    else if (event is AuthenticationLogoutRequested) {
       unawaited(_authenticationRepository.logOut());
     }
   }
@@ -38,13 +44,43 @@ class AuthenticationBloc
   @override
   Future<void> close() {
     _userSubscription.cancel();
+    _usersFirebaseSubscription?.cancel();
     return super.close();
   }
 
   AuthenticationState _mapAuthenticationUserChangedToState(
-      AuthenticationUserChanged event,) {
-    return event.user != User.empty
-        ? AuthenticationState.authenticated(event.user)
-        : const AuthenticationState.unauthenticated();
+      UserModel? currentUser, UserModel? fireUser)  {
+    if (currentUser != UserModel.empty) {
+      if (fireUser != null)
+        return AuthenticationState.authenticated(fireUser);
+      return AuthenticationState.justauth(currentUser!);
+    } else
+      return AuthenticationState.unauthenticated();
+
+    // return user != User.empty
+    //     ? AuthenticationState.authenticated(user)
+    //     : const AuthenticationState.unauthenticated();
   }
+
+
+  bool checkUserId(List<UserModel> users, UserModel user) {
+    for (int i = 0; i < users.length; i++) {
+      if (users[i].id == user.id)
+        return true;
+    }
+    return false;
+  }
+
+  UserModel? getUserId(List<UserModel> users, UserModel user) {
+    for (int i = 0; i < users.length; i++) {
+      if (users[i].id == user.id)
+        return users[i];
+    }
+    return null;
+  }
+
+  AuthenticationState _mapSignUpUserAdded(UserModel user) {
+    return AuthenticationState.authenticated(user);
+  }
+
 }
