@@ -29,7 +29,10 @@ class FilmItem extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(15)),
-              child: Image.network(imgBaseUrl + film.imgUrl, fit: BoxFit.fitWidth,),
+              child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/ajax_loader.gif',
+                  image: imgBaseUrl + film.imgUrl),
+              // child: Image.network(imgBaseUrl + film.imgUrl, fit: BoxFit.fitWidth,),
             ),
           ),
 

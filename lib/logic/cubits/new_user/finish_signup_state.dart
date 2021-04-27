@@ -1,7 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:formz/formz.dart';
-import 'package:login_firebase/logic/blocs/authentication/authentication_bloc.dart';
-import 'package:login_firebase/models/user.dart';
 
 enum ProgressStatus {init, inProgress}
 

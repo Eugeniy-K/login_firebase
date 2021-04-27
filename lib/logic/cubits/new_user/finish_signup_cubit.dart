@@ -24,8 +24,8 @@ class FinishSignupCubit extends Cubit<FinishSignupState> {
   }
 
   Future<UserModel?> addNewUser() async {
-    emit(state.copyWith(status: ProgressStatus.inProgress));
     if (state.userName == '') return null;
+    emit(state.copyWith(status: ProgressStatus.inProgress));
     // emit(state.copyWith(status: FormzStatus.submissionInProgress));
     var fireUser = FirebaseAuth.instance.currentUser;
     var firestoreInstance = FirebaseFirestore.instance;
